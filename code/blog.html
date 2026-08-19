@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Binox</title>
+<link rel="icon" type="image/png" href="assets/logo_BlackWhite.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-alt:#F7F7F9;
+    --card:#F0F0F2;
+    --fg:#0A0A0B;
+    --muted:#6B6C70;
+    --blue:#2F5CFF;
+    --blue-dim:#DCE3FF;
+    --line: rgba(10,10,11,0.10);
+    --line-strong: rgba(10,10,11,0.22);
+    --maxw: 1280px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--blue);color:#fff;}
+  a{color:inherit;text-decoration:none; cursor: pointer;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--blue);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--blue);display:inline-block;}
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.02em;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:15px 28px;border:1px solid var(--line-strong);
+    border-radius:100px;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+    background:transparent;color:var(--fg);cursor:pointer;
+  }
+  .btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid:hover{background:var(--bg);border-color:var(--line-strong);color:var(--fg);}
+
+  /* ===== NAV STYLES FOR JS INJECTION ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:26px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo-mark{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:-0.02em;}
+  nav ul{display:flex;gap:36px;list-style:none;}
+  nav a{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    letter-spacing:0.1em;text-transform:uppercase;
+    position:relative;padding-bottom:4px;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--fg);transition:width .3s ease;}
+  nav a:hover::after{width:100%;}
+
+  /* ===== PAGE HERO ===== */
+  .page-hero {
+    padding: 200px 0 100px;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(47,92,255,0.04), transparent 60%),
+      var(--bg);
+  }
+  .page-hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .page-hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 600px;
+  }
+
+  /* ===== JOURNAL GRID ===== */
+  .journal-section {
+    padding-bottom: 140px;
+  }
+  .journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 32px;}
+  .journal-card{cursor:pointer; display:flex; flex-direction:column;}
+  .journal-thumb{aspect-ratio:4/3;background:linear-gradient(135deg,#e8efff,var(--bg));border:1px solid var(--line);margin-bottom:20px;position:relative;overflow:hidden;transition:transform .4s ease;}
+  .journal-thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(47,92,255,.15), transparent 60%);}
+  
+  .journal-card:hover .journal-thumb {
+    border-color: var(--blue);
+  }
+  .journal-cat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+  .journal-card h4{font-size:22px;line-height:1.3;margin-bottom:12px;transition:color .3s ease;}
+  .journal-card p {color:var(--muted);font-size:14px;line-height:1.6;}
+  .journal-card:hover h4 {color:var(--blue);}
+
+  /* ===== CTA BAND ===== */
+  .cta-band {
+    padding: 120px 0;
+    text-align: center;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--line);
+  }
+  .cta-band h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    margin-bottom: 32px;
+  }
+
+  /* ===== FOOTER STYLES FOR JS INJECTION ===== */
+  footer{padding:40px 0 20px; border-top: 1px solid var(--line);}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;padding-bottom:30px;border-bottom:1px solid var(--line);}
+  .footer-cols{display:flex;gap:40px;}
+  .footer-col h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+  .footer-col a{display:block;font-size:13px;margin-bottom:8px;color:var(--muted);transition:all .3s ease;}
+  .footer-col a:hover{color:var(--fg); transform: translateX(4px);}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;flex-wrap:wrap;gap:14px;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:1024px){
+    .journal-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(max-width:768px){
+    header{padding:20px;}
+    nav ul{gap:18px;}
+    nav a{font-size:10px;}
+    .page-hero {padding: 140px 0 60px;}
+    .wrap{padding:0 20px;}
+    .journal-grid{grid-template-columns:1fr; gap: 48px;}
+    .footer-cols{gap:30px;flex-wrap:wrap;}
+    .footer-top{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV PLACEHOLDER -->
+<div id="navbar-placeholder"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:24px;">Journal</div>
+    <h1>Notes from the studio.</h1>
+    <p>Thoughts on craft, strategy, and the space between two perspectives. How we work, what we build, and why we build it.</p>
+  </div>
+</section>
+
+<!-- JOURNAL GRID -->
+<section class="journal-section">
+  <div class="wrap">
+    <div class="journal-grid">
+      <!-- Article 1 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Craft</div>
+        <h4>Why every project gets a second pair of eyes</h4>
+        <p>A look into our internal review process and why separating the strategy from the visual execution initially creates a stronger final piece.</p>
+      </a>
+      
+      <!-- Article 2 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Strategy</div>
+        <h4>Positioning before production, always</h4>
+        <p>It's easy to jump straight into making things look good. Here is why we insist on defining the "who" and "why" before picking up a camera.</p>
+      </a>
+
+      <!-- Article 3 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Process</div>
+        <h4>Inside Binox: how a brief moves between us</h4>
+        <p>From the initial discovery call to final delivery. A transparent breakdown of how two brothers pass a project back and forth.</p>
+      </a>
+
+      <!-- Article 4 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Growth</div>
+        <h4>The difference between an audience and a community</h4>
+        <p>Growth isn't just about reaching more people. It's about reaching the right people and keeping them engaged over the long term.</p>
+      </a>
+
+      <!-- Article 5 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Design</div>
+        <h4>Building identity systems that scale</h4>
+        <p>A logo is just the beginning. We explore how to build comprehensive visual guidelines that remain consistent across every touchpoint.</p>
+      </a>
+
+      <!-- Article 6 -->
+      <a href="#" class="journal-card" style="text-decoration:none;">
+        <div class="journal-thumb"></div>
+        <div class="journal-cat">Motion</div>
+        <h4>Behind the scenes: Symington Vintage</h4>
+        <p>Lighting setups, shot lists, and the challenges of capturing a heritage brand on film without losing its modern appeal.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Have a project in mind?</h2>
+    <a href="index.html#contact" class="btn solid">Get in touch</a>
+  </div>
+</div>
+
+<!-- FOOTER PLACEHOLDER -->
+<div id="footer-placeholder"></div>
+
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+</body>
+</html>

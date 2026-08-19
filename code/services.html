@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Binox</title>
+<link rel="icon" type="image/png" href="assets/logo_BlackWhite.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-alt:#F7F7F9;
+    --card:#F0F0F2;
+    --fg:#0A0A0B;
+    --muted:#6B6C70;
+    --blue:#2F5CFF;
+    --blue-dim:#DCE3FF;
+    --line: rgba(10,10,11,0.10);
+    --line-strong: rgba(10,10,11,0.22);
+    --maxw: 1280px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--blue);color:#fff;}
+  a{color:inherit;text-decoration:none; cursor: pointer;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--blue);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--blue);display:inline-block;}
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.02em;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:15px 28px;border:1px solid var(--line-strong);
+    border-radius:100px;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+    background:transparent;color:var(--fg);cursor:pointer;
+  }
+  .btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid:hover{background:var(--bg);border-color:var(--line-strong);color:var(--fg);}
+
+  /* ===== NAV STYLES FOR JS INJECTION ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:26px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo-mark{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:-0.02em;}
+  nav ul{display:flex;gap:36px;list-style:none;}
+  nav a{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    letter-spacing:0.1em;text-transform:uppercase;
+    position:relative;padding-bottom:4px;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--fg);transition:width .3s ease;}
+  nav a:hover::after{width:100%;}
+
+  /* ===== PAGE HERO ===== */
+  .page-hero {
+    padding: 200px 0 100px;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(47,92,255,0.04), transparent 60%),
+      var(--bg);
+  }
+  .page-hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .page-hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 600px;
+  }
+
+  /* ===== SERVICES LIST & HOVER EXPANSION ===== */
+  .service-list-sec {
+    padding-bottom: 140px;
+  }
+  .service-row {
+    position: relative;
+    padding: 44px 32px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+  .service-row:hover, .service-row.active {
+    background: rgba(47, 92, 255, 0.04);
+  }
+  .service-main {
+    display: grid;
+    grid-template-columns: 60px 1fr 60px 2.2fr 44px;
+    align-items: center;
+    gap: 28px;
+  }
+  .service-row .idx {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--blue);
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .service-row h4 {
+    font-size: clamp(24px, 3.2vw, 34px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  .service-row:hover h4, .service-row.active h4 {
+    color: var(--blue);
+  }
+  .service-row .dash {
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .service-row .service-brief {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 520px;
+    justify-self: end;
+    text-align: right;
+  }
+  .service-row .expand-icon {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    color: var(--fg);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    justify-self: end;
+  }
+  .service-row:hover .expand-icon, .service-row.active .expand-icon {
+    transform: rotate(45deg);
+    background: var(--blue);
+    color: #ffffff;
+    border-color: var(--blue);
+  }
+
+  /* Expandable Detail Panel */
+  .service-expand {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, margin-top 0.45s ease, padding-top 0.45s ease;
+    padding-top: 0;
+  }
+  .service-row:hover .service-expand, .service-row.active .service-expand {
+    max-height: 700px;
+    opacity: 1;
+    margin-top: 36px;
+    padding-top: 32px;
+    border-top: 1px dashed rgba(47, 92, 255, 0.25);
+  }
+
+  .service-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 50px;
+    padding-left: 88px;
+  }
+  .service-overview p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .service-overview h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .service-capabilities-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .service-capabilities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 32px;
+  }
+  .capability-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .capability-item::before {
+    content: "→";
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--blue);
+    font-size: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .capability-item strong {
+    font-weight: 600;
+    display: block;
+    font-size: 15px;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  .capability-item span {
+    font-size: 13px;
+    color: var(--muted);
+    display: block;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+
+  /* ===== PRICING ===== */
+  #pricing {
+    background: var(--bg-alt);
+    padding: 140px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;gap:40px;flex-wrap:wrap;}
+  .section-head h2{font-size:clamp(28px,4vw,46px);max-width:640px;}
+  .section-head p{color:var(--muted);max-width:340px;font-size:14px;}
+  
+  .toggle-wrap{display:flex;justify-content:center;margin-bottom:60px;}
+  .toggle{
+    display:flex;border:1px solid var(--line-strong);border-radius:100px;padding:4px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+  }
+  .toggle button{
+    background:none;border:none;color:var(--muted);padding:10px 22px;border-radius:100px;cursor:pointer;
+    font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;
+    transition:all .3s ease;
+  }
+  .toggle button.active{background:var(--blue);color:#fff;}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line); max-width: 1000px; margin: 0 auto;}
+  .price-card{background:var(--bg);padding:48px;}
+  .price-card.featured{background:var(--card);}
+  .price-card .amount{font-family:'Space Grotesk';font-size:56px;font-weight:600;margin:24px 0 4px;}
+  .price-card .amount sup{font-family:'JetBrains Mono';font-size:14px;color:var(--muted);font-weight:400;}
+  .price-card h4{font-size:18px;margin-bottom:10px;}
+  .price-card .desc{color:var(--muted);font-size:14px;margin-bottom:32px;}
+  .price-card ul{list-style:none;margin:32px 0;display:flex;flex-direction:column;gap:16px;}
+  .price-card li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--fg);}
+  .price-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:6px;flex:0 0 auto;}
+
+  /* ===== CTA BAND ===== */
+  .cta-band {
+    padding: 120px 0;
+    text-align: center;
+  }
+  .cta-band h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    margin-bottom: 32px;
+  }
+
+  /* ===== FOOTER STYLES FOR JS INJECTION ===== */
+  footer{padding:40px 0 20px; border-top: 1px solid var(--line);}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;padding-bottom:30px;border-bottom:1px solid var(--line);}
+  .footer-cols{display:flex;gap:40px;}
+  .footer-col h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+  .footer-col a{display:block;font-size:13px;margin-bottom:8px;color:var(--muted);transition:color .3s ease;}
+  .footer-col a:hover{color:var(--fg);}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;flex-wrap:wrap;gap:14px;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:768px){
+    header{padding:20px;}
+    nav ul{gap:18px;}
+    nav a{font-size:10px;}
+    .page-hero {padding: 140px 0 60px;}
+    .wrap{padding:0 20px;}
+    .service-main {grid-template-columns: 36px 1fr 32px;}
+    .service-main .dash, .service-main .service-brief {display: none;}
+    .service-detail-grid {grid-template-columns: 1fr; padding-left: 0; gap: 24px;}
+    .service-capabilities-grid {grid-template-columns: 1fr;}
+    .price-grid{grid-template-columns:1fr;}
+    .footer-cols{gap:30px;flex-wrap:wrap;}
+    .footer-top{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV PLACEHOLDER -->
+<div id="navbar-placeholder"></div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:24px;">Our Services</div>
+    <h1>Strategic thinking meets purposeful creativity.</h1>
+    <p>We work as an extension of your team, combining proximity, thoughtful expertise, and premium execution to drive meaningful growth.</p>
+  </div>
+</section>
+
+<!-- DETAILED SERVICES -->
+<section class="service-list-sec">
+  <div class="wrap">
+    <div style="border-top: 1px solid var(--line);">
+      
+      <!-- SERVICE 01: MARKETING STRATEGY -->
+      <div class="service-row">
+        <div class="service-main">
+          <span class="idx">01</span>
+          <h4>Marketing Strategy</h4>
+          <span class="dash"></span>
+          <p class="service-brief">Brand positioning, content strategy, and market mapping to build a strong strategic foundation.</p>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="service-expand">
+          <div class="service-detail-grid">
+            <div class="service-overview">
+              <h5>Strategic Approach</h5>
+              <p>Before any creative execution begins, we map out the positioning and customer journey. We turn business goals into actionable roadmaps that ensure every content asset drives measurable ROI.</p>
+            </div>
+            <div>
+              <div class="service-capabilities-title">In-Depth Scope &amp; Deliverables</div>
+              <div class="service-capabilities-grid">
+                <div class="capability-item">
+                  <div>
+                    <strong>Market Mapping &amp; Positioning</strong>
+                    <span>Competitor analysis, white-space identification &amp; core messaging value.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Content &amp; Brand Storytelling</strong>
+                    <span>Tone-of-voice frameworks, core taglines &amp; content arcs across platforms.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Acquisition Funnel Planning</strong>
+                    <span>Customer journey mapping, lead generation blueprints &amp; launch roadmaps.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Performance &amp; Growth Benchmarks</strong>
+                    <span>KPI architecture, audience profiling &amp; conversion measurement models.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE 02: BRANDING & DESIGN -->
+      <div class="service-row">
+        <div class="service-main">
+          <span class="idx">02</span>
+          <h4>Branding &amp; Design</h4>
+          <span class="dash"></span>
+          <p class="service-brief">Identity systems, naming, visual guidelines, and design executions that give positioning a face.</p>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="service-expand">
+          <div class="service-detail-grid">
+            <div class="service-overview">
+              <h5>Design Philosophy</h5>
+              <p>We craft timeless, intentional visual identities. From logo suites to digital UI systems, every detail is engineered to make your brand instantly recognizable and memorable.</p>
+            </div>
+            <div>
+              <div class="service-capabilities-title">In-Depth Scope &amp; Deliverables</div>
+              <div class="service-capabilities-grid">
+                <div class="capability-item">
+                  <div>
+                    <strong>Visual Identity Systems</strong>
+                    <span>Logo marks, typography pairings, color systems &amp; brand guidelines books.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Brand Assets &amp; Packaging</strong>
+                    <span>Print collateral, product packaging, pitch decks &amp; retail signage.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Web &amp; UI/UX Design</strong>
+                    <span>Modern, responsive website design, interactive components &amp; visual design.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Motion &amp; Kinetic Graphic Assets</strong>
+                    <span>Animated logo reveals, video overlay assets &amp; kinetic typographic systems.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE 03: PHOTO & VIDEO PRODUCTION -->
+      <div class="service-row">
+        <div class="service-main">
+          <span class="idx">03</span>
+          <h4>Photo &amp; Video Production</h4>
+          <span class="dash"></span>
+          <p class="service-brief">Cinematography, studio production, video editing, and motion graphics to tell your story.</p>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="service-expand">
+          <div class="service-detail-grid">
+            <div class="service-overview">
+              <h5>Production Craft</h5>
+              <p>High-end visual production from concept to final cut. Combining state-of-the-art camera equipment, cinematic lighting, and expert post-production to create compelling brand films.</p>
+            </div>
+            <div>
+              <div class="service-capabilities-title">In-Depth Scope &amp; Deliverables</div>
+              <div class="service-capabilities-grid">
+                <div class="capability-item">
+                  <div>
+                    <strong>Cinematography &amp; Commercial Films</strong>
+                    <span>4K/8K commercial direction, brand documentaries &amp; executive interviews.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Studio &amp; Location Photography</strong>
+                    <span>Editorial photography, lifestyle shoots, retail coverage &amp; product photos.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Post-Production &amp; Editing</strong>
+                    <span>Cinema color grading, sound design, original scoring &amp; multi-ratio cuts.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Podcast &amp; Studio Production</strong>
+                    <span>Multi-cam studio recording, audio engineering &amp; social media clip cutdowns.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE 04: DIGITAL MARKETING (GROWTH) -->
+      <div class="service-row">
+        <div class="service-main">
+          <span class="idx">04</span>
+          <h4>Digital Marketing</h4>
+          <span class="dash"></span>
+          <p class="service-brief">Social media management, Meta Ads, and email marketing to reach and convert your audience.</p>
+          <div class="expand-icon">+</div>
+        </div>
+        <div class="service-expand">
+          <div class="service-detail-grid">
+            <div class="service-overview">
+              <h5>Growth Execution</h5>
+              <p>Engineered digital campaigns designed to amplify reach and generate revenue. We manage paid and organic media with data-informed creative strategy.</p>
+            </div>
+            <div>
+              <div class="service-capabilities-title">In-Depth Scope &amp; Deliverables</div>
+              <div class="service-capabilities-grid">
+                <div class="capability-item">
+                  <div>
+                    <strong>Social Media Management</strong>
+                    <span>Content curation, grid aesthetics, community management &amp; channel growth.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Meta &amp; Paid Media Campaigns</strong>
+                    <span>High-converting video ad creatives, copy testing &amp; targeted audience ads.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Email Marketing Automations</strong>
+                    <span>Welcome sequences, custom newsletter flows &amp; customer retention campaigns.</span>
+                  </div>
+                </div>
+                <div class="capability-item">
+                  <div>
+                    <strong>Analytics &amp; Optimization</strong>
+                    <span>Monthly ROI performance reporting, conversion rate optimization &amp; ad scaling.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Ready to grow your brand?</h2>
+    <a href="index.html#contact" class="btn solid">Start a project</a>
+  </div>
+</div>
+
+<!-- FOOTER PLACEHOLDER -->
+<div id="footer-placeholder"></div>
+
+<script>
+  // Interactive toggle for service rows (click/tap support)
+  document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('.service-row');
+    rows.forEach(row => {
+      row.addEventListener('click', (e) => {
+        const isActive = row.classList.contains('active');
+        rows.forEach(r => r.classList.remove('active'));
+        if (!isActive) row.classList.add('active');
+      });
+    });
+  });
+</script>
+
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+</body>
+</html>
