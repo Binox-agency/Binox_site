@@ -50,8 +50,8 @@
   .btn{
     display:inline-flex;align-items:center;gap:10px;
     font-family:'JetBrains Mono',monospace;
-    font-size:13px;letter-spacing:0.05em;text-transform:uppercase;
-    padding:15px 28px;border:1px solid var(--line-strong);
+    font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:13px 24px;border:1px solid var(--line-strong);
     border-radius:100px;
     transition:all .35s cubic-bezier(.16,1,.3,1);
     background:transparent;color:var(--fg);cursor:pointer;
@@ -81,51 +81,436 @@
 
   /* ===== PAGE HERO ===== */
   .page-hero {
-    padding: 200px 0 100px;
+    padding: 190px 0 70px;
     background:
-      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(47,92,255,0.04), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(47,92,255,0.05), transparent 60%),
       var(--bg);
     border-bottom: 1px solid var(--line);
   }
   .page-hero h1 {
     font-size: clamp(40px, 6vw, 72px);
-    line-height: 1.1;
+    line-height: 1.08;
     margin-bottom: 24px;
-    max-width: 800px;
+    max-width: 820px;
   }
   .page-hero p {
     font-size: 18px;
     color: var(--muted);
-    max-width: 600px;
+    max-width: 640px;
+    margin-bottom: 40px;
+  }
+
+  /* ===== FILTER BAR ===== */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 8px;
+  }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .filter-btn:hover {
+    border-color: var(--blue);
+    color: var(--fg);
+  }
+  .filter-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
   }
 
   /* ===== WORK GRID (4 in a row) ===== */
   .work-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);}
   .work-tile{
-    background:var(--bg);position:relative;aspect-ratio:4/5;overflow:hidden;
-    display:flex;align-items:flex-end;padding:24px;
-    cursor:pointer;
+    background:var(--fg);position:relative;aspect-ratio:4/5;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;padding:24px;
+    cursor:pointer;color:#fff;
+    transition:opacity .35s ease;
+  }
+  .work-tile.hidden {
+    display: none;
   }
   .work-tile .bgfx{
     position:absolute;inset:0;
-    background:linear-gradient(135deg, var(--card), #EAEAEF 60%);
-    transition:transform .6s cubic-bezier(.16,1,.3,1);
+    background-size:cover;
+    background-position:center;
+    transition:transform .7s cubic-bezier(.16,1,.3,1), filter .5s ease;
+    filter:brightness(0.84);
   }
-  .work-tile:nth-child(4n+1) .bgfx{background:linear-gradient(135deg,#e8efff,var(--bg));}
-  .work-tile:nth-child(4n+2) .bgfx{background:linear-gradient(135deg,#f3e8ff,var(--bg));}
-  .work-tile:nth-child(4n+3) .bgfx{background:linear-gradient(135deg,#e8f4ff,var(--bg));}
-  .work-tile:nth-child(4n+4) .bgfx{background:linear-gradient(135deg,#f4f4f0,var(--bg));}
+  .work-tile::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,10,11,0.32) 0%, rgba(10,10,11,0.10) 40%, rgba(10,10,11,0.88) 100%);
+    z-index:1;
+    transition:opacity .4s ease;
+  }
+  .work-tile:hover .bgfx{transform:scale(1.06);filter:brightness(0.94);}
   
-  .work-tile:hover .bgfx{transform:scale(1.06);}
-  .work-tile .meta{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;width:100%; gap: 12px;}
-  .work-tile h3{font-size:20px;}
-  .work-tile .cat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .work-tile .tile-top{
+    position:relative;z-index:2;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:12px;width:100%;
+  }
+  .work-tile .scope-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:6px 12px;border-radius:100px;
+    background:rgba(10,10,11,0.65);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.2);
+    color:#fff;
+    line-height:1.2;
+  }
+  .work-tile .scope-pill.accent{
+    background:rgba(47,92,255,0.88);
+    border-color:rgba(255,255,255,0.3);
+  }
   .work-tile .arrow{
-    width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);
+    width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(255,255,255,0.35);
+    background:rgba(10,10,11,0.4);
+    backdrop-filter:blur(6px);
     display:flex;align-items:center;justify-content:center;
-    transition:all .3s ease; align-self: flex-start;
+    transition:all .3s ease;flex-shrink:0;color:#fff;
   }
   .work-tile:hover .arrow{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(45deg);}
+
+  .work-tile .meta{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;justify-content:flex-end;width:100%;gap:6px;
+  }
+  .work-tile h3{font-size:21px;line-height:1.2;color:#fff;}
+  .work-tile .cat{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:rgba(255,255,255,0.75);text-transform:uppercase;letter-spacing:.08em;
+  }
+
+  /* ===== PROJECT MODAL ===== */
+  .project-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 11, 0.78);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .project-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .project-modal {
+    background: var(--bg);
+    color: var(--fg);
+    width: 100%;
+    max-width: 1200px;
+    max-height: 92vh;
+    border-radius: 20px;
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+  }
+  .project-modal-backdrop.open .project-modal {
+    transform: translateY(0) scale(1);
+  }
+  .modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .modal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .modal-header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .modal-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: var(--blue-dim);
+    color: var(--blue);
+    font-weight: 500;
+  }
+  .modal-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+  .modal-close:hover {
+    background: var(--fg);
+    color: #fff;
+  }
+  .modal-body {
+    padding: 28px 32px 36px;
+  }
+  .modal-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .modal-section-label::before {
+    content: "";
+    width: 14px;
+    height: 1px;
+    background: var(--blue);
+  }
+  .video-embed-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0A0A0B;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .video-embed-wrap iframe,
+  .video-embed-wrap video {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* Large Instagram Posts Grid (2 per row for TimeOut, or 1 large centered for single post) */
+  .ig-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+  .ig-posts-grid.single-post {
+    grid-template-columns: minmax(320px, 560px);
+    justify-content: center;
+  }
+  .ig-post-card {
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(10,10,11,0.05);
+  }
+  .ig-post-card iframe {
+    width: 100%;
+    height: 620px;
+    border: 0;
+    background: #fff;
+  }
+  .ig-post-link {
+    padding: 13px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--blue);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    transition: background 0.2s ease, color 0.2s ease;
+    font-weight: 500;
+  }
+  .ig-post-link:hover {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  /* Side-by-side layout: Instagram Post on Left, Photos on Right */
+  .split-post-gallery {
+    display: grid;
+    grid-template-columns: minmax(340px, 430px) 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-bottom: 28px;
+  }
+  .split-post-gallery .ig-posts-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 0;
+  }
+  .split-post-gallery .modal-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 0;
+  }
+  .split-post-gallery .modal-gallery-item {
+    aspect-ratio: 3 / 4;
+  }
+
+  .modal-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .modal-gallery-item {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--card);
+    cursor: zoom-in;
+    border: 1px solid var(--line);
+  }
+  .modal-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s cubic-bezier(.16,1,.3,1);
+  }
+  .modal-gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Compact Info Footer (AFTER media) */
+  .modal-info-footer {
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .modal-info-text {
+    max-width: 780px;
+  }
+  .modal-info-note {
+    font-size: 15px;
+    color: var(--fg);
+    line-height: 1.65;
+  }
+  .modal-info-note strong {
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .modal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ===== FULLSCREEN IMAGE LIGHTBOX ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    background: rgba(10,10,11,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 86vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .lightbox-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+  }
+  .lightbox-btn:hover { background: var(--blue); border-color: var(--blue); }
+  .lightbox-prev { left: 28px; }
+  .lightbox-next { right: 28px; }
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .lightbox-counter {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.1em;
+  }
 
   /* ===== CTA BAND ===== */
   .cta-band {
@@ -151,14 +536,20 @@
   /* ===== RESPONSIVE ===== */
   @media(max-width:1024px){
     .work-grid{grid-template-columns:repeat(2,1fr);}
+    .ig-posts-grid{grid-template-columns:1fr;}
+    .split-post-gallery{grid-template-columns:1fr;}
   }
   @media(max-width:768px){
     header{padding:20px;}
     nav ul{gap:18px;}
     nav a{font-size:10px;}
-    .page-hero {padding: 140px 0 80px;}
+    .page-hero {padding: 140px 0 60px;}
     .wrap{padding:0 20px;}
     .work-grid{grid-template-columns:1fr;}
+    .ig-posts-grid{grid-template-columns:1fr;}
+    .project-modal-backdrop{padding:12px;}
+    .modal-header{padding:16px 20px;}
+    .modal-body{padding:20px;}
     .footer-cols{gap:30px;flex-wrap:wrap;}
     .footer-top{flex-direction:column;}
   }
@@ -174,26 +565,136 @@
   <div class="wrap">
     <div class="eyebrow" style="margin-bottom:24px;">Our Portfolio</div>
     <h1>Everything we've built, shaped by two perspectives.</h1>
-    <p>A complete archive of brand, film, and design projects that combine strategic clarity with purposeful creativity.</p>
+    <p>Event coverage, commercial photography, and post-production projects.</p>
+    
+    <div class="filter-bar" role="tablist" aria-label="Filter portfolio projects">
+      <button class="filter-btn active" data-filter="all">All Work (7)</button>
+      <button class="filter-btn" data-filter="events">Event Coverage &amp; Video (2)</button>
+      <button class="filter-btn" data-filter="guimaraes">Guimarães Shopping (4)</button>
+      <button class="filter-btn" data-filter="timeout">Time Out × Ohana Market (1)</button>
+    </div>
   </div>
 </section>
 
 <!-- WORK GRID FULL -->
-<div class="work-grid">
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Comunidades Vivas</h3><div class="cat">Documentary · Post-Production</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Symington Vintage</h3><div class="cat">Brand Film · Studio</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Nienor</h3><div class="cat">Identity · Motion</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Opteam Spirit</h3><div class="cat">Campaign · Photography</div></div></div></a>
-  
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Aura Botanica</h3><div class="cat">Brand Positioning · Packaging</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Echo Tech</h3><div class="cat">Web Design · Motion</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Lumina Festival</h3><div class="cat">Campaign · Social Media</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Vela Estates</h3><div class="cat">Identity · Print</div></div></div></a>
-  
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Horizon Line</h3><div class="cat">Marketing Strategy · Ads</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Mesa 42</h3><div class="cat">Content Strategy · Video</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Oasis Retreat</h3><div class="cat">Branding · Web</div></div></div></a>
-  <a class="work-tile" href="#"><div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Urban Canvas</h3><div class="cat">Creative Direction · Photography</div></div></div></a>
+<div class="work-grid" id="workGrid">
+
+  <!-- 1. PRÉVOIR PORTUGAL -->
+  <article class="work-tile" data-category="events" data-project="prevoir">
+    <div class="bgfx" style="background-image:url('assets/portfolio/prevoir/cover.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill accent">Captação de Imagem · Recap Mockup</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Event Coverage · Prévoir Portugal</div>
+      <h3>30 Anos PRÉVOIR</h3>
+    </div>
+  </article>
+
+  <!-- 2. LEGATUM GEST -->
+  <article class="work-tile" data-category="events" data-project="legatum">
+    <div class="bgfx" style="background-image:url('assets/portfolio/legatum/cover.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill accent">Edição de Vídeo</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Event Coverage · Legatum Gest</div>
+      <h3>Manhãs de Investimento: Habitação</h3>
+    </div>
+  </article>
+
+  <!-- 3. GUIMARÃES SHOPPING — EXTERIOR -->
+  <article class="work-tile" data-category="guimaraes" data-project="gui-exterior">
+    <div class="bgfx" style="background-image:url('assets/portfolio/guimaraes-exterior/GUI_Shopping-01.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill">Fotografia Exterior</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Guimarães Shopping</div>
+      <h3>Exterior</h3>
+    </div>
+  </article>
+
+  <!-- 4. GUIMARÃES SHOPPING — PERFUMES & COMPANHIA -->
+  <article class="work-tile" data-category="guimaraes" data-project="gui-perfumes">
+    <div class="bgfx" style="background-image:url('assets/portfolio/guimaraes-perfumes/GUI_Shopping-07.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill">Fotografia de Loja</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Guimarães Shopping</div>
+      <h3>Perfumes &amp; Companhia</h3>
+    </div>
+  </article>
+
+  <!-- 5. GUIMARÃES SHOPPING — NP4 GAMES -->
+  <article class="work-tile" data-category="guimaraes" data-project="gui-np4">
+    <div class="bgfx" style="background-image:url('assets/portfolio/guimaraes-np4/GUI_Shopping-18.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill">Fotografia de Loja</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Guimarães Shopping</div>
+      <h3>NP4 Games</h3>
+    </div>
+  </article>
+
+  <!-- 6. GUIMARÃES SHOPPING — FARMÁCIA VITÓRIA -->
+  <article class="work-tile" data-category="guimaraes" data-project="gui-farmacia">
+    <div class="bgfx" style="background-image:url('assets/portfolio/guimaraes-farmacia/GUI_Shopping-26.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill">Fotografia de Loja</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Guimarães Shopping</div>
+      <h3>Farmácia Vitória</h3>
+    </div>
+  </article>
+
+  <!-- 7. TIME OUT MARKET x OHANA MARKET -->
+  <article class="work-tile" data-category="timeout" data-project="timeout">
+    <div class="bgfx" style="background-image:url('assets/portfolio/timeout/timeout-01.jpg');"></div>
+    <div class="tile-top">
+      <span class="scope-pill accent">Fotografia de Evento</span>
+      <div class="arrow">↗</div>
+    </div>
+    <div class="meta">
+      <div class="cat">Event &amp; Brand Photography · Porto</div>
+      <h3>Time Out Market × Ohana Market</h3>
+    </div>
+  </article>
+
+</div>
+
+<!-- PROJECT DETAIL MODAL -->
+<div class="project-modal-backdrop" id="projectModalBackdrop" aria-hidden="true">
+  <div class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <span class="modal-header-title" id="modalTitle">Project</span>
+        <span class="modal-badge" id="modalBadge">Category</span>
+      </div>
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close modal">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Media First, Concise Text Second -->
+    </div>
+  </div>
+</div>
+
+<!-- FULLSCREEN IMAGE LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">✕</button>
+  <button class="lightbox-btn lightbox-prev" id="lightboxPrev" aria-label="Previous image">←</button>
+  <img id="lightboxImg" src="" alt="Project high-resolution view">
+  <button class="lightbox-btn lightbox-next" id="lightboxNext" aria-label="Next image">→</button>
+  <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
 </div>
 
 <!-- CTA -->
@@ -209,5 +710,336 @@
 
 <script src="navbar.js"></script>
 <script src="footer.js"></script>
+<script>
+(function() {
+  function rangeImgs(prefix, start, end, padLen, ext) {
+    var arr = [];
+    for (var i = start; i <= end; i++) {
+      var num = padLen ? String(i).padStart(padLen, '0') : String(i);
+      arr.push(prefix + num + (ext || '.jpg'));
+    }
+    return arr;
+  }
+
+  var PROJECTS = {
+    "prevoir": {
+      title: "30 Anos PRÉVOIR em Portugal",
+      badge: "Captação de Imagem · Recap Mockup",
+      videos: [
+        {
+          type: "youtube",
+          src: "https://www.youtube.com/embed/gtUCFcnKBl4?rel=0"
+        }
+      ],
+      images: [],
+      note: "<strong>30 Anos PRÉVOIR em Portugal:</strong> Cobertura audiovisual da convenção comemorativa dos 30 anos da PRÉVOIR em Portugal, realizada na Alfândega do Porto. O foco do trabalho pedido pelo cliente foi a <strong>captação de imagem</strong> ao longo de todo o evento — desde as intervenções em palco e momentos institucionais até ao ambiente de gala e convívio. O vídeo recap apresentado acima é um <strong>mockup desenvolvido internamente pela Binox</strong> (não solicitado pelo cliente) com o objetivo de demonstrar a qualidade e versatilidade das imagens captadas.",
+      links: [
+        { label: "Instagram Post ↗", url: "https://www.instagram.com/p/Dd4I5h6Culr/?utm_source=ig_web_copy_link&vrfl=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==", primary: true },
+        { label: "YouTube Recap ↗", url: "https://youtu.be/gtUCFcnKBl4", primary: false }
+      ]
+    },
+
+    "legatum": {
+      title: "Legatum Gest — Manhãs de Investimento: Habitação",
+      badge: "Edição de Vídeo",
+      videos: [
+        { type: "mp4", src: "assets/portfolio/legatum/legatum-recap.mp4", poster: "assets/portfolio/legatum/cover.jpg" }
+      ],
+      images: [],
+      note: "<strong>Legatum Gest — Manhãs de Investimento (Habitação):</strong> Vídeo resumo da conferência dedicada ao setor imobiliário e estratégias de investimento em habitação. Neste projeto foi-nos solicitada exclusivamente a <strong>edição e pós-produção de vídeo</strong> a partir do material bruto do evento, estruturando o ritmo narrativo, seleção dos melhores momentos dos painéis e tratamento visual para publicação oficial no LinkedIn da Legatum Gest.",
+      links: [
+        { label: "LinkedIn Post ↗", url: "https://www.linkedin.com/posts/legatumgest-manhasdeinvestimento-habitacao-ugcPost-7468624035812290560-yPs2/?highlightedUpdateUrn=urn%3Ali%3Aactivity%3A7468708359219757056&highlightedUpdateType=SOCIAL_SHARE&origin=SOCIAL_SHARE&utm_source=share&utm_medium=member_desktop&rcm=ACoAAD9vg2sBZXkUTCz7dnbFq5aDTJakdoT70ds", primary: true }
+      ]
+    },
+
+    "gui-exterior": {
+      title: "Guimarães Shopping — Exterior",
+      badge: "Guimarães Shopping · Exterior",
+      videos: [],
+      sideBySide: true,
+      igPosts: [
+        { code: "De4gyjYANiF", label: "Publicação Oficial @guimaraeshopping.oficial", url: "https://www.instagram.com/p/De4gyjYANiF/" }
+      ],
+      images: rangeImgs("assets/portfolio/guimaraes-exterior/GUI_Shopping-", 1, 4, 2, ".jpg"),
+      note: "<strong>Guimarães Shopping — Momento Exterior:</strong> Sessão de fotografia arquitetónica e comercial focada na fachada principal e envolvente exterior do Guimarães Shopping. As imagens foram produzidas para reforçar a comunicação digital e redes sociais oficiais do centro comercial, destacando a identidade visual e presença do espaço.",
+      links: [
+        { label: "Ver Post no Instagram ↗", url: "https://www.instagram.com/p/De4gyjYANiF/", primary: true }
+      ]
+    },
+
+    "gui-perfumes": {
+      title: "Perfumes & Companhia — Guimarães Shopping",
+      badge: "Guimarães Shopping · Fotografia de Loja",
+      videos: [],
+      images: rangeImgs("assets/portfolio/guimaraes-perfumes/GUI_Shopping-", 7, 17, 2, ".jpg"),
+      note: "<strong>Perfumes &amp; Companhia — Guimarães Shopping:</strong> Reportagem fotográfica comercial no interior da loja Perfumes &amp; Companhia. O trabalho incidiu sobre os detalhes de exposição de produto, iluminação, atendimento personalizado e ambiente premium do espaço, criando um banco de imagens versátil para comunicação digital do centro comercial.",
+      links: []
+    },
+
+    "gui-np4": {
+      title: "NP4 Games — Guimarães Shopping",
+      badge: "Guimarães Shopping · Fotografia de Loja",
+      videos: [],
+      images: rangeImgs("assets/portfolio/guimaraes-np4/GUI_Shopping-", 18, 25, 2, ".jpg"),
+      note: "<strong>NP4 Games — Guimarães Shopping:</strong> Cobertura fotográfica dedicada à loja NP4 Games, captando a variedade de videojogos, consolas, colecionáveis e cultura pop. O foco esteve em transmitir a energia dinâmica do espaço, a organização das montras e a experiência em loja para os conteúdos digitais do Guimarães Shopping.",
+      links: []
+    },
+
+    "gui-farmacia": {
+      title: "Farmácia Vitória — Guimarães Shopping",
+      badge: "Guimarães Shopping · Fotografia de Loja",
+      videos: [],
+      images: rangeImgs("assets/portfolio/guimaraes-farmacia/GUI_Shopping-", 26, 43, 2, ".jpg"),
+      note: "<strong>Farmácia Vitória — Guimarães Shopping:</strong> Sessão fotográfica institucional e comercial na Farmácia Vitória. As fotografias destacam a modernidade do espaço, a proximidade e profissionalismo da equipa no atendimento ao público e a apresentação cuidada das áreas de dermocosmética, saúde e bem-estar.",
+      links: []
+    },
+
+    "timeout": {
+      title: "Time Out Market × Ohana Market",
+      badge: "Fotografia de Evento & Marcas",
+      videos: [],
+      igPosts: [
+        { code: "De9ixJljCSu", label: "Post 01 · Bhoomi (Quiosque Ohana)", url: "https://www.instagram.com/p/De9ixJljCSu/?utm_source=ig_web_copy_link&obrf=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==" },
+        { code: "DemrEXUgLAS", label: "Post 02 · Arte & Design Independente", url: "https://www.instagram.com/p/DemrEXUgLAS/?utm_source=ig_web_copy_link&rpxt=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==" },
+        { code: "DemqbnfAMZp", label: "Post 03 · Forever Bond & Joalharia", url: "https://www.instagram.com/p/DemqbnfAMZp/?utm_source=ig_web_copy_link&rpxt=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==" },
+        { code: "DempHokAKLD", label: "Post 04 · Lifestyle & Marcas", url: "https://www.instagram.com/p/DempHokAKLD/?utm_source=ig_web_copy_link&dlrf=MzRlODBiNWFlZA==&srtk=MzRlODBiNWFlZA==" }
+      ],
+      images: rangeImgs("assets/portfolio/timeout/timeout-", 1, 20, 2, ".jpg"),
+      note: "<strong>Time Out Market × Ohana Market:</strong> Cobertura fotográfica completa da edição especial do Ohana Market no Time Out Market Porto. O trabalho documentou o ambiente vibrante do mercado, a arquitetura icónica do espaço e o detalhe das várias marcas independentes de joalharia, decoração, moda e ilustração presentes no evento — combinando as publicações oficiais de Instagram com a seleção oficial de fotografias editadas pela Binox.",
+      links: []
+    }
+  };
+
+  // Filter logic
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var tiles = document.querySelectorAll('.work-tile');
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var filter = btn.getAttribute('data-filter');
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      tiles.forEach(function(tile) {
+        var cat = tile.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          tile.classList.remove('hidden');
+        } else {
+          tile.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Modal logic (MEDIA FIRST, CONCISE TEXT SECOND)
+  var modalBackdrop = document.getElementById('projectModalBackdrop');
+  var modalBody = document.getElementById('modalBody');
+  var modalTitle = document.getElementById('modalTitle');
+  var modalBadge = document.getElementById('modalBadge');
+  var modalCloseBtn = document.getElementById('modalCloseBtn');
+
+  var currentGallery = [];
+  var currentImgIndex = 0;
+
+  function openProjectModal(projectId) {
+    var p = PROJECTS[projectId];
+    if (!p) return;
+
+    modalTitle.textContent = p.title;
+    modalBadge.textContent = p.badge;
+
+    var html = '';
+    var isFileProtocol = (window.location.protocol === 'file:');
+
+    // 1. VIDEOS FIRST (if any)
+    if (p.videos && p.videos.length) {
+      p.videos.forEach(function(v) {
+        html += '<div class="video-embed-wrap">';
+        if (v.type === 'youtube-or-local') {
+          if (isFileProtocol && v.localSrc) {
+            html += '<video controls preload="metadata" poster="' + (v.poster || '') + '"><source src="' + v.localSrc + '" type="video/mp4"></video>';
+          } else {
+            html += '<iframe src="' + v.youtubeSrc + '" title="' + p.title + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+          }
+        } else if (v.type === 'youtube') {
+          html += '<iframe src="' + v.src + '" title="' + p.title + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+        } else {
+          html += '<video controls preload="metadata" poster="' + (v.poster || '') + '"><source src="' + v.src + '" type="video/mp4"></video>';
+        }
+        html += '</div>';
+      });
+    }
+
+    // 2. SIDE-BY-SIDE (Instagram Post Left + Photos Right) OR STACKED
+    if (p.sideBySide && p.igPosts && p.igPosts.length && p.images && p.images.length) {
+      currentGallery = p.images;
+      html += '<div class="split-post-gallery">';
+      
+      // Left Column: Instagram Post
+      html += '<div>';
+      html += '<div class="modal-section-label">Publicação no Instagram</div>';
+      html += '<div class="ig-posts-grid">';
+      p.igPosts.forEach(function(post) {
+        html += '<div class="ig-post-card">';
+        html += '<iframe src="https://www.instagram.com/p/' + post.code + '/embed/" scrolling="no" loading="lazy" allowtransparency="true"></iframe>';
+        html += '<a class="ig-post-link" href="' + post.url + '" target="_blank" rel="noopener noreferrer"><span>' + post.label + '</span><span>Ver ↗</span></a>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '</div>';
+
+      // Right Column: Photos Grid
+      html += '<div>';
+      html += '<div class="modal-section-label">Fotografias</div>';
+      html += '<div class="modal-gallery-grid">';
+      p.images.forEach(function(imgSrc, idx) {
+        html += '<div class="modal-gallery-item" data-idx="' + idx + '"><img src="' + imgSrc + '" alt="' + p.title + ' - ' + (idx + 1) + '" loading="lazy" decoding="async"></div>';
+      });
+      html += '</div>';
+      html += '</div>';
+
+      html += '</div>';
+    } else {
+      // INSTAGRAM POSTS FIRST (when present)
+      if (p.igPosts && p.igPosts.length) {
+        var gridClass = p.igPosts.length === 1 ? 'ig-posts-grid single-post' : 'ig-posts-grid';
+        html += '<div class="modal-section-label">' + (p.igPosts.length === 1 ? 'Publicação no Instagram' : 'Publicações no Instagram') + '</div>';
+        html += '<div class="' + gridClass + '">';
+        p.igPosts.forEach(function(post) {
+          html += '<div class="ig-post-card">';
+          html += '<iframe src="https://www.instagram.com/p/' + post.code + '/embed/" scrolling="no" loading="lazy" allowtransparency="true"></iframe>';
+          html += '<a class="ig-post-link" href="' + post.url + '" target="_blank" rel="noopener noreferrer"><span>' + post.label + '</span><span>Ver no Instagram ↗</span></a>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      // OFFICIAL PHOTO GALLERY UNDERNEATH
+      if (p.images && p.images.length) {
+        currentGallery = p.images;
+        if (p.igPosts && p.igPosts.length) {
+          html += '<div class="modal-section-label">Fotografias</div>';
+        }
+        html += '<div class="modal-gallery-grid">';
+        p.images.forEach(function(imgSrc, idx) {
+          html += '<div class="modal-gallery-item" data-idx="' + idx + '"><img src="' + imgSrc + '" alt="' + p.title + ' - ' + (idx + 1) + '" loading="lazy" decoding="async"></div>';
+        });
+        html += '</div>';
+      } else {
+        currentGallery = [];
+      }
+    }
+
+    // 4. MINIMAL TEXT & LINKS AT THE BOTTOM
+    html += '<div class="modal-info-footer">';
+    html += '<div class="modal-info-text"><p class="modal-info-note">' + (p.note || '') + '</p></div>';
+    if (p.links && p.links.length) {
+      html += '<div class="modal-links">';
+      p.links.forEach(function(lnk) {
+        var cls = lnk.primary ? 'btn solid' : 'btn';
+        html += '<a class="' + cls + '" href="' + lnk.url + '" target="_blank" rel="noopener noreferrer">' + lnk.label + '</a>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+
+    modalBody.innerHTML = html;
+    modalBackdrop.classList.add('open');
+    modalBackdrop.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    // Attach lightbox triggers
+    var galleryItems = modalBody.querySelectorAll('.modal-gallery-item');
+    galleryItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        var idx = parseInt(item.getAttribute('data-idx'), 10);
+        openLightbox(idx);
+      });
+    });
+  }
+
+  function closeProjectModal() {
+    modalBackdrop.classList.remove('open');
+    modalBackdrop.setAttribute('aria-hidden', 'true');
+    modalBody.innerHTML = '';
+    document.body.style.overflow = '';
+    if (window.location.hash) {
+      history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    }
+  }
+
+  tiles.forEach(function(tile) {
+    tile.addEventListener('click', function() {
+      var pid = tile.getAttribute('data-project');
+      openProjectModal(pid);
+    });
+  });
+
+  modalCloseBtn.addEventListener('click', closeProjectModal);
+  modalBackdrop.addEventListener('click', function(e) {
+    if (e.target === modalBackdrop) closeProjectModal();
+  });
+
+  // Lightbox logic
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightboxImg');
+  var lightboxCounter = document.getElementById('lightboxCounter');
+  var lightboxClose = document.getElementById('lightboxClose');
+  var lightboxPrev = document.getElementById('lightboxPrev');
+  var lightboxNext = document.getElementById('lightboxNext');
+
+  function updateLightbox() {
+    if (!currentGallery.length) return;
+    lightboxImg.src = currentGallery[currentImgIndex];
+    lightboxCounter.textContent = (currentImgIndex + 1) + ' / ' + currentGallery.length;
+  }
+
+  function openLightbox(idx) {
+    currentImgIndex = idx;
+    updateLightbox();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImg.src = '';
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentImgIndex = (currentImgIndex - 1 + currentGallery.length) % currentGallery.length;
+    updateLightbox();
+  });
+  lightboxNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    currentImgIndex = (currentImgIndex + 1) % currentGallery.length;
+    updateLightbox();
+  });
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lightboxPrev.click();
+      if (e.key === 'ArrowRight') lightboxNext.click();
+    } else if (modalBackdrop.classList.contains('open')) {
+      if (e.key === 'Escape') closeProjectModal();
+    }
+  });
+
+  // Support deep linking via URL hash (e.g. work.html#timeout)
+  function checkHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash && PROJECTS[hash]) {
+      openProjectModal(hash);
+    }
+  }
+  window.addEventListener('hashchange', checkHash);
+  checkHash();
+})();
+</script>
 </body>
 </html>

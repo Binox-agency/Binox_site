@@ -52,7 +52,7 @@
 
       /* Smooth transform transition for magnetic clickable elements */
       .btn, .play-btn, nav a, .social-links a, .contact-socials a, 
-      .hero-bottom-bar a, .work-tile .arrow, .work-tile, .branch-card, .stat-card, .value-card {
+      .hero-bottom-bar a, .branch-card, .stat-card, .value-card {
         will-change: transform;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
       }
@@ -91,7 +91,7 @@
   // ==========================================
   const initMagneticElements = () => {
     const ball = document.getElementById('binox-cursor-ball');
-    const magneticSelector = '.btn, .play-btn, nav a, .social-links a, .contact-socials a, .hero-bottom-bar a, .work-tile .arrow, .work-tile, .branch-card, .stat-card, .value-card';
+    const magneticSelector = '.btn, .play-btn, nav a, .social-links a, .contact-socials a, .hero-bottom-bar a, .branch-card, .stat-card, .value-card';
     const magneticTargets = document.querySelectorAll(magneticSelector);
 
     magneticTargets.forEach((el) => {

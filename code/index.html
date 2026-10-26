@@ -355,33 +355,38 @@
   /* ===== WORK GRID ===== */
   .work-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);}
   .work-tile{
-    background:var(--bg);position:relative;aspect-ratio:4/5;overflow:hidden;
+    background:var(--fg);position:relative;aspect-ratio:4/5;overflow:hidden;
     display:flex;align-items:flex-end;padding:24px;
-    cursor:pointer;
+    cursor:pointer;color:#fff;
   }
   .work-tile .bgfx{
     position:absolute;inset:0;
-    background:linear-gradient(135deg, var(--card), #EAEAEF 60%);
-    transition:transform 0.6s cubic-bezier(.16,1,.3,1);
+    background-size:cover;
+    background-position:center;
+    transition:transform 0.6s cubic-bezier(.16,1,.3,1), filter 0.4s ease;
+    filter:brightness(0.82);
   }
-  .work-tile:nth-child(1) .bgfx{background:linear-gradient(135deg,#e8efff,var(--bg));}
-  .work-tile:nth-child(2) .bgfx{background:linear-gradient(135deg,#f3e8ff,var(--bg));}
-  .work-tile:nth-child(3) .bgfx{background:linear-gradient(135deg,#e8f4ff,var(--bg));}
-  .work-tile:nth-child(4) .bgfx{background:linear-gradient(135deg,#f4f4f0,var(--bg));}
+  .work-tile::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,10,11,0.25) 0%, rgba(10,10,11,0.1) 45%, rgba(10,10,11,0.88) 100%);
+    z-index:1;
+  }
   
-  .work-tile:hover .bgfx{transform:scale(1.06);}
+  .work-tile:hover .bgfx{transform:scale(1.06);filter:brightness(0.92);}
   .work-tile .meta{
     position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;width:100%; gap: 12px;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .work-tile:hover .meta {transform: translateY(-8px);}
   
-  .work-tile h3{font-size:20px;}
-  .work-tile .cat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .work-tile h3{font-size:20px;color:#fff;}
+  .work-tile .cat{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.78);text-transform:uppercase;letter-spacing:.08em;}
   .work-tile .arrow{
-    width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);
+    width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.35);
+    background:rgba(10,10,11,0.38);backdrop-filter:blur(6px);
     display:flex;align-items:center;justify-content:center;
-    transition:all .3s ease; align-self: flex-start;
+    transition:all .3s ease; align-self: flex-start;color:#fff;
   }
   .work-tile:hover .arrow{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(45deg);}
 
@@ -579,7 +584,7 @@
       <span class="dot"></span> Open for new projects
     </div>
     <div class="social-links">
-      <a href="#" aria-label="Instagram" title="Instagram" style="display: flex; align-items: center;">
+      <a href="https://www.instagram.com/binox.agency/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" style="display: flex; align-items: center;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
       </a>
       <a href="#" aria-label="LinkedIn" title="LinkedIn" style="display: flex; align-items: center;">
@@ -601,24 +606,24 @@
     </div>
   </div>
   <div class="work-grid">
-    <a class="work-tile reveal" href="work.html" style="transition-delay: 0s;">
-      <div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Comunidades Vivas</h3><div class="cat">Documentary · Post-Production</div></div></div>
+    <a class="work-tile reveal" href="work.html#prevoir" style="transition-delay: 0s;">
+      <div class="bgfx" style="background-image:url('assets/portfolio/prevoir/cover.jpg');"></div><div class="meta"><div class="arrow">↗</div><div><h3>30 Anos PRÉVOIR</h3><div class="cat">Event Capture · Recap Mockup</div></div></div>
     </a>
-    <a class="work-tile reveal" href="work.html" style="transition-delay: 0.1s;">
-      <div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Symington Vintage</h3><div class="cat">Brand Film · Studio</div></div></div>
+    <a class="work-tile reveal" href="work.html#legatum" style="transition-delay: 0.1s;">
+      <div class="bgfx" style="background-image:url('assets/portfolio/legatum/cover.jpg');"></div><div class="meta"><div class="arrow">↗</div><div><h3>Legatum Gest</h3><div class="cat">Manhãs de Investimento · Video Editing</div></div></div>
     </a>
-    <a class="work-tile reveal" href="work.html" style="transition-delay: 0.2s;">
-      <div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Nienor</h3><div class="cat">Identity · Motion</div></div></div>
+    <a class="work-tile reveal" href="work.html#gui-exterior" style="transition-delay: 0.2s;">
+      <div class="bgfx" style="background-image:url('assets/portfolio/guimaraes-exterior/GUI_Shopping-01.jpg');"></div><div class="meta"><div class="arrow">↗</div><div><h3>Guimarães Shopping</h3><div class="cat">Commercial Photography · 4 Moments</div></div></div>
     </a>
-    <a class="work-tile reveal" href="work.html" style="transition-delay: 0.3s;">
-      <div class="bgfx"></div><div class="meta"><div class="arrow">↗</div><div><h3>Opteam Spirit</h3><div class="cat">Campaign · Photography</div></div></div>
+    <a class="work-tile reveal" href="work.html#timeout" style="transition-delay: 0.3s;">
+      <div class="bgfx" style="background-image:url('assets/portfolio/timeout/timeout-01.jpg');"></div><div class="meta"><div class="arrow">↗</div><div><h3>Time Out × Ohana Market</h3><div class="cat">Event &amp; Brand Photography · Porto</div></div></div>
     </a>
   </div>
 </section>
 
 <!-- REEL -->
 <div class="reel reveal">
-  <div class="play-btn">▶ Watch reel</div>
+  <a href="work.html#prevoir" class="play-btn">▶ Watch reel</a>
 </div>
 
 <!-- VIEW ALL WORK -->
@@ -662,14 +667,14 @@
 <!-- MARQUEE -->
 <div class="marquee-outer reveal">
   <div class="marquee-track">
-    <span class="marquee-item"><b>CineEco</b> Official Selection <span class="sep">/</span></span>
+    <span class="marquee-item"><b>Event Coverage</b> &amp; Video Recap <span class="sep">/</span></span>
     <span class="marquee-item">Studio &amp; Podcast Production <span class="sep">/</span></span>
     <span class="marquee-item">Retail &amp; Brand Coverage <span class="sep">/</span></span>
-    <span class="marquee-item">Documentary Field Work <span class="sep">/</span></span>
-    <span class="marquee-item"><b>CineEco</b> Official Selection <span class="sep">/</span></span>
+    <span class="marquee-item">Commercial Photography <span class="sep">/</span></span>
+    <span class="marquee-item"><b>Event Coverage</b> &amp; Video Recap <span class="sep">/</span></span>
     <span class="marquee-item">Studio &amp; Podcast Production <span class="sep">/</span></span>
     <span class="marquee-item">Retail &amp; Brand Coverage <span class="sep">/</span></span>
-    <span class="marquee-item">Documentary Field Work <span class="sep">/</span></span>
+    <span class="marquee-item">Commercial Photography <span class="sep">/</span></span>
   </div>
 </div>
 
@@ -696,7 +701,7 @@
           </div>
           <div class="contact-socials">
             <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-            <a href="#" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            <a href="https://www.instagram.com/binox.agency/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
           </div>
         </div>
       </div>
@@ -779,8 +784,38 @@
     }, { root: null, threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // Handle clicks on any link targeting #contact
+    // Handle clicks on navbar logo when already on index.html -> replay animation video
     document.addEventListener('click', (e) => {
+      const logoLink = e.target.closest('header .logo-mark');
+      if (logoLink) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+          const vid = preloader.querySelector('video');
+          if (vid) {
+            vid.currentTime = 0;
+            vid.play().catch(() => {});
+          }
+          document.body.classList.remove('loaded');
+          document.body.style.overflowY = 'hidden';
+          preloader.style.display = 'flex';
+          preloader.classList.remove('hidden');
+          setTimeout(() => {
+            preloader.classList.add('hidden');
+            document.body.classList.add('loaded');
+            setTimeout(() => {
+              preloader.style.display = 'none';
+              document.body.style.overflowY = 'auto';
+            }, 1200);
+          }, 3000);
+        }
+        return;
+      }
+
       const link = e.target.closest('a[href*="#contact"]');
       if (link) {
         const targetUrl = new URL(link.href, window.location.href);

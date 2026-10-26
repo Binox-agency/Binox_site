@@ -5,6 +5,7 @@ const navbarHTML = `
   </a>
   <nav>
     <ul>
+      <li><a href="index.html#top">Home</a></li>
       <li><a href="work.html">Work</a></li>
       <li><a href="services.html">Services</a></li>
       <li><a href="blog.html">Blog</a></li>

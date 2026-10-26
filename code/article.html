@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Article — Binox Studio</title>
+<link rel="icon" type="image/png" href="assets/logo_BlackWhite.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-alt:#F7F7F9;
+    --card:#F0F0F2;
+    --fg:#0A0A0B;
+    --muted:#6B6C70;
+    --blue:#2F5CFF;
+    --blue-dim:#DCE3FF;
+    --line: rgba(10,10,11,0.10);
+    --line-strong: rgba(10,10,11,0.22);
+    --maxw: 1280px;
+    --article-maxw: 780px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--blue);color:#fff;}
+  a{color:inherit;text-decoration:none; cursor: pointer;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  .article-wrap{max-width:var(--article-maxw);margin:0 auto;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--blue);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--blue);display:inline-block;}
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.02em;}
+  
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:0.05em;text-transform:uppercase;
+    padding:13px 24px;border:1px solid var(--line-strong);
+    border-radius:100px;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+    background:transparent;color:var(--fg);cursor:pointer;
+  }
+  .btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .btn.solid:hover{background:var(--bg);border-color:var(--line-strong);color:var(--fg);}
+
+  /* ===== HEADER & NAV COMPATIBILITY ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:26px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .logo-mark{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:-0.02em;}
+  nav ul{display:flex;gap:36px;list-style:none;}
+  nav a{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    letter-spacing:0.1em;text-transform:uppercase;
+    position:relative;padding-bottom:4px;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--fg);transition:width .3s ease;}
+  nav a:hover::after{width:100%;}
+
+  /* ===== ARTICLE HERO ===== */
+  .article-hero {
+    padding: 180px 0 60px;
+    background: radial-gradient(ellipse 60% 50% at 20% 20%, rgba(47,92,255,0.04), transparent 60%), var(--bg);
+  }
+  .back-link {
+    margin-bottom: 36px;
+    display: inline-block;
+  }
+  .article-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .meta-date, .meta-author {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .article-hero h1 {
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .article-hero .lead-summary {
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* ===== FEATURED IMAGE ===== */
+  .featured-image-section {
+    padding-bottom: 50px;
+  }
+  .featured-image-wrapper {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-alt);
+    position: relative;
+    aspect-ratio: 16/9;
+  }
+  .featured-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .featured-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8efff 0%, #ffffff 60%, #f0f0f2 100%);
+    padding: 40px;
+    text-align: center;
+  }
+  .featured-image-placeholder .placeholder-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--blue);
+    padding: 6px 14px;
+    border: 1px solid rgba(47,92,255,0.3);
+    border-radius: 100px;
+    background: rgba(47,92,255,0.05);
+    margin-bottom: 16px;
+  }
+  .featured-image-placeholder h3 {
+    font-size: 24px;
+    max-width: 500px;
+    color: var(--fg);
+  }
+  .image-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* ===== ARTICLE BODY CONTENT ===== */
+  .article-body-section {
+    padding-bottom: 100px;
+  }
+  .article-body {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #1a1a1c;
+  }
+  .article-body p {
+    margin-bottom: 28px;
+  }
+  .article-body h2 {
+    font-size: 28px;
+    margin: 48px 0 20px;
+    color: var(--fg);
+    line-height: 1.3;
+  }
+  .article-body h3 {
+    font-size: 22px;
+    margin: 36px 0 16px;
+    color: var(--fg);
+  }
+  .article-body blockquote {
+    margin: 36px 0;
+    padding: 24px 32px;
+    border-left: 3px solid var(--blue);
+    background: var(--bg-alt);
+    border-radius: 0 12px 12px 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  .article-body ul, .article-body ol {
+    margin: 0 0 28px 24px;
+  }
+  .article-body li {
+    margin-bottom: 10px;
+  }
+
+  /* ===== ARTICLE NAVIGATION & FOOTER ===== */
+  .post-nav {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 0;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .post-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 45%;
+  }
+  .post-nav-item.next {
+    text-align: right;
+    align-items: flex-end;
+  }
+  .post-nav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .post-nav-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .post-nav-item:hover .post-nav-title {
+    color: var(--blue);
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    padding: 100px 0;
+    text-align: center;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--line);
+  }
+  .cta-band h2 {
+    font-size: clamp(32px, 5vw, 52px);
+    margin-bottom: 32px;
+  }
+
+  /* FOOTER STYLES */
+  footer{padding:40px 0 20px; border-top: 1px solid var(--line);}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;padding-bottom:30px;border-bottom:1px solid var(--line);}
+  .footer-cols{display:flex;gap:40px;}
+  .footer-col h5{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+  .footer-col a{display:block;font-size:13px;margin-bottom:8px;color:var(--muted);transition:all .3s ease;}
+  .footer-col a:hover{color:var(--fg); transform: translateX(4px);}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;flex-wrap:wrap;gap:14px;}
+
+  @media(max-width:768px){
+    header{padding:20px;}
+    nav ul{gap:18px;}
+    nav a{font-size:10px;}
+    .article-hero {padding: 140px 0 40px;}
+    .wrap{padding:0 20px;}
+    .article-hero h1 {font-size: 32px;}
+    .post-nav {flex-direction: column; align-items: flex-start; gap: 30px;}
+    .post-nav-item.next {text-align: left; align-items: flex-start; max-width: 100%;}
+    .post-nav-item {max-width: 100%;}
+    .footer-cols{gap:30px;flex-wrap:wrap;}
+    .footer-top{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV PLACEHOLDER -->
+<div id="navbar-placeholder"></div>
+
+<!-- ARTICLE HERO -->
+<section class="article-hero">
+  <div class="wrap">
+    <div class="article-wrap">
+      <a href="blog.html" class="btn back-link">← Back to Journal</a>
+      
+      <div class="article-meta-top">
+        <div id="article-cat" class="eyebrow">Craft</div>
+        <div class="meta-date" id="article-date">August 15, 2026</div>
+        <div class="meta-author" id="article-readtime">• 4 min read</div>
+      </div>
+
+      <h1 id="article-title">Why every project gets a second pair of eyes</h1>
+      <p class="lead-summary" id="article-summary">A look into our internal review process and why separating strategy from visual execution initially creates a stronger final piece.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED IMAGE SECTION -->
+<section class="featured-image-section">
+  <div class="wrap">
+    <div class="article-wrap">
+      <div class="featured-image-wrapper" id="featured-image-container">
+        <!-- Rendered via JS -->
+      </div>
+      <div class="image-caption" id="image-caption">Binox Studio review session — Porto, Portugal</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE BODY SECTION -->
+<section class="article-body-section">
+  <div class="wrap">
+    <div class="article-wrap">
+      <div class="article-body" id="article-content">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- NEXT / PREVIOUS ARTICLE NAV -->
+      <div class="post-nav" id="post-nav">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Have a project in mind?</h2>
+    <a href="index.html#contact" class="btn solid">Get in touch</a>
+  </div>
+</div>
+
+<!-- FOOTER PLACEHOLDER -->
+<div id="footer-placeholder"></div>
+
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+
+<script>
+// ARTICLES DATA STORE
+const articlesData = {
+  1: {
+    id: 1,
+    title: "Why every project gets a second pair of eyes",
+    category: "Craft",
+    date: "August 15, 2026",
+    readTime: "4 min read",
+    summary: "A look into our internal review process and why separating strategy from visual execution initially creates a stronger final piece.",
+    image: "assets/Binox_hero.png",
+    imageCaption: "Binox Studio internal strategy session",
+    content: `
+      <p>When working on creative projects—whether it is a brand identity system, a promotional film, or a digital experience—it is easy to become so close to the execution that you miss the bigger picture. After spending days perfecting fine details, your eyes adjust to every line and shadow, making objective evaluation nearly impossible.</p>
+      
+      <p>At Binox, we built our workflow around a simple rule: <strong>no work leaves the studio without being thoroughly challenged by both of us from separate perspectives.</strong></p>
+
+      <h2>The Two-Perspective Advantage</h2>
+      <p>Because Binox was founded by two partners with complementary skillsets, we divide every brief into two distinct lenses before bringing them back together:</p>
+
+      <ul>
+        <li><strong>Strategic Lens:</strong> Does this concept communicate the intended core message? Does it align with the brand’s long-term positioning and target audience?</li>
+        <li><strong>Craft Lens:</strong> Is the execution flawless? Are the typography, contrast, pacing, and visual polish up to studio standards?</li>
+      </ul>
+
+      <blockquote>"When strategy and visual craft are reviewed independently before convergence, the result is never just pretty—it is purposeful."</blockquote>
+
+      <h2>How Our Internal Review Works</h2>
+      <p>Once an initial direction reaches key milestones, we pause and conduct an internal review. We step away from the work for at least a few hours before presenting it to one another as if we were the client or the end audience.</p>
+
+      <p>We ask hard questions: <em>Is this clear? Is there any clutter we can eliminate? Does this evoke the right emotion within 3 seconds?</em></p>
+
+      <h2>The Result for Our Clients</h2>
+      <p>By enforcing this internal review loop, our clients never receive half-baked concepts. Every deliverable has already survived rigorous internal questioning. This means fewer revisions, faster alignment, and work that stands up to real-world scrutiny.</p>
+    `
+  },
+  2: {
+    id: 2,
+    title: "Positioning before production, always",
+    category: "Strategy",
+    date: "August 04, 2026",
+    readTime: "5 min read",
+    summary: "It's easy to jump straight into making things look good. Here is why we insist on defining the 'who' and 'why' before picking up a camera.",
+    image: "assets/jon_foto.jpeg",
+    imageCaption: "Behind the lens during a brand shoot",
+    content: `
+      <p>It is tempting to start every creative project in the fun phase—sketching logos, testing color palettes, framing cinema shots, or building sleek animations. But creating beautiful visuals without clear positioning is like building a house without a foundation: it looks great until the wind blows.</p>
+
+      <h2>Defining the Core Identity</h2>
+      <p>Before we write a line of code or set up a single light on set, we ask three fundamental questions:</p>
+      <ol>
+        <li>Who is this brand trying to reach, and what do they care about?</li>
+        <li>What makes this offer fundamentally different from existing alternatives?</li>
+        <li>What is the single emotion or impression we want people to retain?</li>
+      </ol>
+
+      <blockquote>"Production is velocity, but positioning is direction. Moving fast in the wrong direction only gets you lost sooner."</blockquote>
+
+      <h2>Translating Strategy into Visuals</h2>
+      <p>When positioning is crystal clear, creative decisions become surprisingly simple. Color palettes aren't chosen based on subjective preference; they are chosen because they evoke precision or warmth. Filming angles aren't random; they are intentionally selected to feel cinematic or intimate.</p>
+
+      <p>When strategy leads production, your brand aesthetic becomes an asset that generates trust and drives real commercial results.</p>
+    `
+  },
+  3: {
+    id: 3,
+    title: "Inside Binox: how a brief moves between us",
+    category: "Process",
+    date: "July 22, 2026",
+    readTime: "6 min read",
+    summary: "From the initial discovery call to final delivery. A transparent breakdown of how two brothers pass a project back and forth.",
+    image: "assets/tyler_foto.jpeg",
+    imageCaption: "Studio collaboration and technical planning",
+    content: `
+      <p>Clients often ask us: <em>"How does a boutique studio of two people manage complete end-to-end branding, video production, and web development seamlessly?"</em></p>
+
+      <p>The secret lies in our modular hand-off process. Rather than working in isolated silos, we pass the project back and forth at structured phases.</p>
+
+      <h2>Phase 1: Discovery & Strategy Mapping</h2>
+      <p>We kick off together with the client. We extract key insights, analyze competitor landscapes, and define project boundaries. We summarize these learnings into a concise 1-page creative brief.</p>
+
+      <h2>Phase 2: Visual Concepting & Production</h2>
+      <p>Once the brief is approved, production begins. Visual assets, moodboards, copy frameworks, and video concepts are produced in parallel.</p>
+
+      <h2>Phase 3: Integration & Refinement</h2>
+      <p>This is where magic happens. Video edits meet digital interfaces; typography meets motion graphics. We review each component together to ensure seamless cohesion across every single client touchpoint.</p>
+    `
+  },
+  4: {
+    id: 4,
+    title: "The difference between an audience and a community",
+    category: "Growth",
+    date: "July 10, 2026",
+    readTime: "4 min read",
+    summary: "Growth isn't just about reaching more people. It's about reaching the right people and keeping them engaged over the long term.",
+    image: null,
+    imageCaption: "Building lasting engagement through brand clarity",
+    content: `
+      <p>An audience passive-watches your content. A community actively advocates for your brand. In today's crowded digital environment, reaching 100,000 passive views is far less valuable than building 1,000 deeply committed brand loyalists.</p>
+
+      <h2>Cultivating Authenticity</h2>
+      <p>People don't bond with corporate logos; they connect with values, voice, and consistent storytelling. High-performing brands communicate with clarity, honesty, and distinct personality.</p>
+
+      <h2>Consistency Across Touchpoints</h2>
+      <p>Whether someone sees your social post, visits your website, or receives your product packaging, the tone and quality must feel unified. Consistency builds predictability, and predictability builds trust.</p>
+    `
+  },
+  5: {
+    id: 5,
+    title: "Building identity systems that scale",
+    category: "Design",
+    date: "June 28, 2026",
+    readTime: "5 min read",
+    summary: "A logo is just the beginning. We explore how to build comprehensive visual guidelines that remain consistent across every touchpoint.",
+    image: null,
+    imageCaption: "Visual identity design principles",
+    content: `
+      <p>A static logo file is no longer enough to represent a modern business. Today's brands exist across responsive mobile screens, social feeds, high-resolution video streams, physical merchandise, and print media.</p>
+
+      <h2>Designing for Adaptability</h2>
+      <p>A scalable identity system includes flexible logomarks, expressive typography hierarchies, defined spacing rules, and clear motion guidelines. This ensures that whether your brand appears on an Apple Watch screen or a billboard, it remains immediately recognizable.</p>
+    `
+  },
+  6: {
+    id: 6,
+    title: "Behind the scenes: High-Impact Event Coverage",
+    category: "Motion",
+    date: "June 14, 2026",
+    readTime: "7 min read",
+    summary: "Camera movement, lighting adaptation, and post-production workflows for turning live corporate and cultural events into lasting brand assets.",
+    image: null,
+    imageCaption: "Cinematic filming on location in Porto",
+    content: `
+      <p>Capturing heritage brands on camera requires a delicate balance: honoring decades of tradition while presenting a contemporary, visually stunning aesthetic for modern audiences.</p>
+
+      <h2>Crafting the Visual Mood</h2>
+      <p>From corporate anniversaries like Prévoir Portugal's 30th celebration to executive panels and independent markets in Porto, we focus on dynamic camera work, authentic human interactions, and crisp post-production pacing that extends the life of every event across digital channels.</p>
+    `
+  }
+};
+
+// INITIALIZE PAGE CONTENT BASED ON URL PARAMETER
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const articleId = parseInt(urlParams.get("id")) || 1;
+  const article = articlesData[articleId] || articlesData[1];
+
+  // Update Page Title
+  document.getElementById("page-title").textContent = `${article.title} — Binox Studio`;
+
+  // Render Header Details
+  document.getElementById("article-cat").textContent = article.category;
+  document.getElementById("article-date").textContent = article.date;
+  document.getElementById("article-readtime").textContent = `• ${article.readTime}`;
+  document.getElementById("article-title").textContent = article.title;
+  document.getElementById("article-summary").textContent = article.summary;
+
+  // Render Featured Image
+  const imgContainer = document.getElementById("featured-image-container");
+  const captionElement = document.getElementById("image-caption");
+  
+  if (article.image) {
+    imgContainer.innerHTML = `<img src="${article.image}" alt="${article.title}">`;
+  } else {
+    imgContainer.innerHTML = `
+      <div class="featured-image-placeholder">
+        <div class="placeholder-badge">${article.category} Journal</div>
+        <h3>${article.title}</h3>
+      </div>
+    `;
+  }
+  captionElement.textContent = article.imageCaption || `${article.title} — Binox Studio`;
+
+  // Render Article Body
+  document.getElementById("article-content").innerHTML = article.content;
+
+  // Render Prev / Next Navigation
+  const totalArticles = Object.keys(articlesData).length;
+  const prevId = articleId > 1 ? articleId - 1 : totalArticles;
+  const nextId = articleId < totalArticles ? articleId + 1 : 1;
+
+  const prevArticle = articlesData[prevId];
+  const nextArticle = articlesData[nextId];
+
+  document.getElementById("post-nav").innerHTML = `
+    <a href="article.html?id=${prevArticle.id}" class="post-nav-item">
+      <span class="post-nav-label">← Previous Article</span>
+      <span class="post-nav-title">${prevArticle.title}</span>
+    </a>
+    <a href="article.html?id=${nextArticle.id}" class="post-nav-item next">
+      <span class="post-nav-label">Next Article →</span>
+      <span class="post-nav-title">${nextArticle.title}</span>
+    </a>
+  `;
+});
+</script>
+</body>
+</html>
